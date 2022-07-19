@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Site\SiteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,12 +15,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('frontend.layouts.master');
+
+//site route
+Route::controller(SiteController::class)->group(function(){
+    Route::get('/','home');
 });
 
-//backend route
-Route::get('/admin/dashboard', function () {
-    return view('index');
-});
+//site route end
+
+
+//Route::get('/', function () {
+//    return view('frontend.layouts.master');
+//});
+//
+////backend route
+//Route::get('/admin/dashboard', function () {
+//    return view('index');
+//});
 //Route::get('admin/dashboard', AdminController::class, 'dashboard');
+
+Route::group(['prefix' => 'admin/dashboard'],function(){
+Route::controller(AdminController::class)->group(function () {
+    Route::get('/', 'dashboard');
+});
+});
